@@ -53,7 +53,10 @@ namespace Resulz
 
         public OperationResult<T> AppendError(string context, string description) => AppendError(ErrorMessage.Create(context, description));
 
-        public OperationResult<T> AppendError(ErrorMessage error) => AppendErrors(new[] { error });
+        public OperationResult<T> AppendError(ErrorMessage error) {
+            Errors.Add(error);
+            return this;
+        }
 
         public OperationResult<T> AppendErrors(IEnumerable<ErrorMessage> errors)
         {
