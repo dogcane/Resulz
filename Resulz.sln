@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resulz", "src\Resulz\Resulz.csproj", "{11BB9FF0-C80D-454D-9EAD-88BB8DEACB23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resulz", "src\Resulz\Resulz.csproj", "{11BB9FF0-C80D-454D-9EAD-88BB8DEACB23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resultz.UnitTest", "src\Resultz.UnitTest\Resultz.UnitTest.csproj", "{A7E8F350-963F-4984-AA01-68CFBB3CB2D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resulz.UnitTest", "src\Resultz.UnitTest\Resulz.UnitTest.csproj", "{A7E8F350-963F-4984-AA01-68CFBB3CB2D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
