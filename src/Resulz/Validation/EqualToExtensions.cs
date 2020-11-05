@@ -6,11 +6,12 @@ namespace Resulz.Validation
 {
     public static class EqualToExtensions
     {
-        public static ValueChecker<T> EqualTo<T>(this ValueChecker<T> checker, T value) => EqualTo(checker, value, string.Format("{0}_NOT_EQUAL", checker.Context).ToUpper());
+        public static ValueChecker<T> EqualTo<T>(this ValueChecker<T> checker, T value) where T : IEquatable<T>
+            => EqualTo(checker, value, string.Format("{0}_NOT_EQUAL", checker.Context).ToUpper());
 
-        public static ValueChecker<T> EqualTo<T>(this ValueChecker<T> checker, T value, string message)
+        public static ValueChecker<T> EqualTo<T>(this ValueChecker<T> checker, T value, string message) where T : IEquatable<T>
         {
-            if ((value != null && !value.Equals(checker.Value)) || (checker.Value != null && !checker.Value.Equals(value)))
+            if (!object.Equals(checker.Value, value))
             {
                 checker.Result.AppendError(checker.Context, message);
             }
@@ -21,7 +22,7 @@ namespace Resulz.Validation
 
         public static ValueChecker<string> EqualTo(this ValueChecker<string> checker, string value, StringComparison comparisonType, string message)
         {
-            if ((value != null && !value.Equals(checker.Value, comparisonType)) || (checker.Value != null && !checker.Value.Equals(value, comparisonType)))
+            if (!string.Equals(checker.Value, value, comparisonType))
             {
                 checker.Result.AppendError(checker.Context, message);
             }
