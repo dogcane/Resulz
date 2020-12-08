@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resulz", "src\Resulz\Resulz
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resulz.UnitTest", "src\Resultz.UnitTest\Resulz.UnitTest.csproj", "{A7E8F350-963F-4984-AA01-68CFBB3CB2D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resulz.Samples", "src\Resulz.Samples\Resulz.Samples.csproj", "{4116F724-7CE7-4DE0-AEDB-725FCA00FC77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A7E8F350-963F-4984-AA01-68CFBB3CB2D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7E8F350-963F-4984-AA01-68CFBB3CB2D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7E8F350-963F-4984-AA01-68CFBB3CB2D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4116F724-7CE7-4DE0-AEDB-725FCA00FC77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4116F724-7CE7-4DE0-AEDB-725FCA00FC77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4116F724-7CE7-4DE0-AEDB-725FCA00FC77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4116F724-7CE7-4DE0-AEDB-725FCA00FC77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

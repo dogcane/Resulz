@@ -8,7 +8,7 @@ namespace Resulz.Validation
     public static class GreaterThenOrEqualExtensions
     {
         public static ValueChecker<T> GreaterThenOrEqual<T>(this ValueChecker<T> checker, T value) where T : IComparable<T>
-            => GreaterThenOrEqual(checker, value, string.Format("{0}_NOT_GREATER", checker.Context).ToUpper());
+            => GreaterThenOrEqual(checker, value, string.Format("{0}_NOT_GREATER_OR_EQUAL", checker.Context).ToUpper());
 
         public static ValueChecker<T> GreaterThenOrEqual<T>(this ValueChecker<T> checker, T value, string description) where T : IComparable<T>
         {
