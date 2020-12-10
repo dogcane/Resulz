@@ -6,6 +6,6 @@ namespace Resulz.Samples.Domain
 {
     public interface ILoanService
     {
-        OperationResult GiveLoadToCustomer(Customer customer, decimal loanAmount);
+        OperationResult GiveLoanToCustomer(Customer customer, decimal loanAmount);
     }
 }

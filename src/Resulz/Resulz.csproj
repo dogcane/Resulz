@@ -6,17 +6,14 @@
     <Authors>Andrea Canegrati</Authors>
     <Description>An "operation result" implementation with a "bit" of validation framework.</Description>
     <PackageProjectUrl>https://github.com/dogcane/Resulz</PackageProjectUrl>
-    <PackageIcon>result-icon-270x250.jpg</PackageIcon>
+    <PackageIcon></PackageIcon>
     <RepositoryUrl>https://github.com/dogcane/Resulz</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="C:\Users\dogca\OneDrive\Desktop\result-icon-270x250.jpg">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
+    <None Remove="OperationResultExtensions.cs~RF19dc2998.TMP" />
   </ItemGroup>
 
 </Project>

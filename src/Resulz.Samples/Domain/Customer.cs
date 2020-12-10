@@ -30,7 +30,11 @@ namespace Resulz.Samples.Domain
                 .With(name, nameof(Name)).Required().StringLength(250)
                 .With(address, nameof(Address)).Required().StringLength(500)
                 .With(birthday, nameof(Birthday))
-                .Result;                
+                .Result
+                .IfSuccessThenReturn<Customer>((result) =>
+                {
+                    return OperationResult<Customer>.MakeSuccess(new Customer(name, address, birthday));
+                });
         }
 
         public OperationResult UpdateInformation(string name, string address, DateTime birthday)
@@ -40,14 +44,31 @@ namespace Resulz.Samples.Domain
                 .With(name, nameof(Name)).Required().StringLength(250)
                 .With(address, nameof(Address)).Required().StringLength(500)
                 .With(birthday, nameof(Birthday))
-                .Result;
+                .Result
+                .IfSuccess((result) =>
+                {
+                    Name = name;
+                    Address = address;
+                    Birthday = birthday;
+                });
         }
 
-        public OperationResult UpgradeLevel()
+        public OperationResult<LevelUpgradeInfo> UpgradeLevel()
         {
-            var currentLevel = Level;
-            Level++;
-            return (currentLevel == Level) ? OperationResult.MakeFailure(ErrorMessage.Create(nameof(Level), "MAXIMUM_LEVEL_REACHED")) : OperationResult.MakeSuccess();
+            return OperationResult
+                .MakeSuccess()
+                .With(Level, nameof(Level)).Condition(level => level < CustomerLevel.Gold, "MAXIMUM_LEVEL_REACHED")
+                .Result
+                .IfSuccessThenReturn<LevelUpgradeInfo>((result) =>
+                {
+                    Level++;
+                    return OperationResult<LevelUpgradeInfo>.MakeSuccess(new LevelUpgradeInfo { PreviusLevel = Level - 1, CurrentLevel = Level });
+                });
+        }
+
+        public override string ToString()
+        {
+            return $"Name : {Name}\r\nAddress : {Address}\r\nBirthday : {Birthday:D}\r\nLevel : {Level}";
         }
     }
 
@@ -56,5 +77,16 @@ namespace Resulz.Samples.Domain
         Standard,
         Silver,
         Gold
+    }
+
+    public struct LevelUpgradeInfo
+    {
+        public CustomerLevel PreviusLevel { get; set; }
+        public CustomerLevel CurrentLevel { get; set; }
+
+        public override string ToString()
+        {
+            return $"Old Level : {PreviusLevel}\r\nNew Level : {CurrentLevel}";
+        }
     }
 }
