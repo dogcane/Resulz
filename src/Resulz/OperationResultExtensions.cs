@@ -18,9 +18,9 @@ namespace Resulz
             return result;
         }
 
-        public static OperationResult<T> IfSuccessThenReturn<T>(this IOperationResult result, Func<IOperationResult, OperationResult<T>> operation)
+        public static OperationResult<T> IfSuccessThenReturn<T>(this IOperationResult result, Func<T> factoryFunc)
         {
-            return result.Success ? operation(result) : OperationResult<T>.MakeFailure(result.Errors);
+            return result.Success ? OperationResult<T>.MakeSuccess(factoryFunc()) : OperationResult<T>.MakeFailure(result.Errors);
         }
 
         #endregion

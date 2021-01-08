@@ -12,7 +12,7 @@ namespace Resulz.Validation
 
         public static ValueChecker<T> Into<T>(this ValueChecker<T> checker, T[] arguments, string description)
         {
-            if (arguments.Length == 0 || !arguments.Contains(checker.Value))
+            if (checker.CanContinue() && (arguments == null || arguments.Length == 0 || !arguments.Contains(checker.Value)))
             {
                 checker.Result.AppendError(checker.Context, description);
             }

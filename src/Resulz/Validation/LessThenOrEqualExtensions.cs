@@ -12,7 +12,7 @@ namespace Resulz.Validation
 
         public static ValueChecker<T> LessThenOrEqual<T>(this ValueChecker<T> checker, T value, string description) where T : IComparable<T>
         {
-            if (Comparer.Default.Compare(checker.Value, value) > 0)
+            if (checker.CanContinue() && (Comparer.Default.Compare(checker.Value, value) > 0))
             {
                 checker.Result.AppendError(checker.Context, description);
             }

@@ -10,7 +10,7 @@ namespace Resulz.Validation
 
         public static ValueChecker<string> StringLength(this ValueChecker<string> checker, int maxLength, string message)
         {
-            if (checker.Value != null && checker.Value.Length > maxLength)
+            if (checker.CanContinue() && (checker.Value != null && checker.Value.Length > maxLength))
             {
                 checker.Result.AppendError(checker.Context, message);
             }

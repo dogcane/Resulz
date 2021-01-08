@@ -31,10 +31,7 @@ namespace Resulz.Samples.Domain
                 .With(address, nameof(Address)).Required().StringLength(500)
                 .With(birthday, nameof(Birthday))
                 .Result
-                .IfSuccessThenReturn<Customer>((result) =>
-                {
-                    return OperationResult<Customer>.MakeSuccess(new Customer(name, address, birthday));
-                });
+                .IfSuccessThenReturn<Customer>(() => new Customer(name, address, birthday));
         }
 
         public OperationResult UpdateInformation(string name, string address, DateTime birthday)
@@ -59,10 +56,10 @@ namespace Resulz.Samples.Domain
                 .MakeSuccess()
                 .With(Level, nameof(Level)).Condition(level => level < CustomerLevel.Gold, "MAXIMUM_LEVEL_REACHED")
                 .Result
-                .IfSuccessThenReturn<LevelUpgradeInfo>((result) =>
+                .IfSuccessThenReturn<LevelUpgradeInfo>(() =>
                 {
                     Level++;
-                    return OperationResult<LevelUpgradeInfo>.MakeSuccess(new LevelUpgradeInfo { PreviusLevel = Level - 1, CurrentLevel = Level });
+                    return new LevelUpgradeInfo { PreviusLevel = Level - 1, CurrentLevel = Level };
                 });
         }
 
