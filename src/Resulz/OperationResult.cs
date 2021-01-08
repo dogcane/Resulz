@@ -71,6 +71,8 @@ namespace Resulz
             return this;
         }
 
+        public override string ToString() => $"Succes:{Success} - Error Count:{Errors.Count()}";
+
         #endregion
 
         #region Operators

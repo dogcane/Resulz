@@ -17,7 +17,7 @@ namespace Resulz.Validation.Tests
             var strvalue = "value";
             var result = OperationResult
                 .MakeSuccess()
-                .With(strvalue, nameof(strvalue)).StringMatch("va\\w+e", true, RegexOptions.Compiled)
+                .With(strvalue, nameof(strvalue)).StringMatch("va\\w+e", RegexOptions.Compiled)
                 .Result;
             Assert.IsTrue(result.Success);
             Assert.IsTrue(result.Errors.Count() == 0);
@@ -29,23 +29,12 @@ namespace Resulz.Validation.Tests
             var strvalue = "value";
             var result = OperationResult
                 .MakeSuccess()
-                .With(strvalue, nameof(strvalue)).StringMatch("\\d+\\w+", true, RegexOptions.Compiled)
+                .With(strvalue, nameof(strvalue)).StringMatch("\\d+\\w+", RegexOptions.Compiled)
                 .Result;
             var error = ErrorMessage.Create(nameof(strvalue), string.Format("{0}_NOT_MATCHED", nameof(strvalue).ToUpper()));
             Assert.IsFalse(result.Success);
             Assert.IsTrue(result.Errors.Count() == 1);
             Assert.IsTrue(result.Errors.Contains(error));
-        }
-
-        public void StringMatchTestSuccesWithEmptyValue()
-        {
-            var strvalue = string.Empty;
-            var result = OperationResult
-                .MakeSuccess()
-                .With(strvalue, nameof(strvalue)).StringMatch("va\\w+e", true, RegexOptions.Compiled)
-                .Result;
-            Assert.IsTrue(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 0);
         }
 
         public void StringMatchTestFailWithEmptyValue()
@@ -53,7 +42,7 @@ namespace Resulz.Validation.Tests
             var strvalue = string.Empty;
             var result = OperationResult
                 .MakeSuccess()
-                .With(strvalue, nameof(strvalue)).StringMatch("va\\w+e", false, RegexOptions.Compiled)
+                .With(strvalue, nameof(strvalue)).StringMatch("va\\w+e", RegexOptions.Compiled)
                 .Result;
             var error = ErrorMessage.Create(nameof(strvalue), string.Format("{0}_NOT_MATCHED", nameof(strvalue).ToUpper()));
             Assert.IsFalse(result.Success);
@@ -61,23 +50,12 @@ namespace Resulz.Validation.Tests
             Assert.IsTrue(result.Errors.Contains(error));
         }
 
-        public void StringMatchTestSuccesWithNullValue()
-        {
-            string strvalue = null;
-            var result = OperationResult
-                .MakeSuccess()
-                .With(strvalue, nameof(strvalue)).StringMatch("va\\w+e", true, RegexOptions.Compiled)
-                .Result;
-            Assert.IsTrue(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 0);
-        }
-
         public void StringMatchTestFailWithNullValue()
         {
             string strvalue = null;
             var result = OperationResult
                 .MakeSuccess()
-                .With(strvalue, nameof(strvalue)).StringMatch("va\\w+e", false, RegexOptions.Compiled)
+                .With(strvalue, nameof(strvalue)).StringMatch("va\\w+e", RegexOptions.Compiled)
                 .Result;
             var error = ErrorMessage.Create(nameof(strvalue), string.Format("{0}_NOT_MATCHED", nameof(strvalue).ToUpper()));
             Assert.IsFalse(result.Success);
