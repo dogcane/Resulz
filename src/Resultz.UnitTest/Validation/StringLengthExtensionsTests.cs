@@ -1,11 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Resulz.Validation;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Resulz.Validation.Tests
+namespace Resulz.Validation.UnitTest
 {
     [TestClass()]
     public class StringLengthExtensionsTests

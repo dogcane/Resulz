@@ -1,11 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Resulz.Validation;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Resulz.Validation.Tests
+namespace Resulz.Validation.UnitTest
 {
     [TestClass()]
     public class GreaterThenExtensionsTests
@@ -42,7 +39,7 @@ namespace Resulz.Validation.Tests
             var datevalue = new DateTime(2020, 1, 1);
             var result = OperationResult
                 .MakeSuccess()
-                .With(datevalue, nameof(datevalue)).GreaterThen(new DateTime(1900,1,1))
+                .With(datevalue, nameof(datevalue)).GreaterThen(new DateTime(1900, 1, 1))
                 .Result;
             Assert.IsTrue(result.Success);
             Assert.IsTrue(result.Errors.Count() == 0);

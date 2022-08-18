@@ -8,8 +8,14 @@ namespace Resulz
     /// Represents the basic generic result of an operation, with no returning value
     /// </summary>
     [Serializable]
-    public class OperationResult : IOperationResult
+    public sealed class OperationResult : IOperationResult
     {
+        #region Fields
+
+        private ErrorMessageList _Errors = new ErrorMessageList();
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -20,7 +26,7 @@ namespace Resulz
         /// <summary>
         /// Errors occurred during the execution of the operations
         /// </summary>
-        public ErrorMessageList Errors { get; } = new ErrorMessageList();
+        public IEnumerable<ErrorMessage> Errors => _Errors;
 
         #endregion
 
@@ -32,7 +38,8 @@ namespace Resulz
 
         public OperationResult(IEnumerable<ErrorMessage> errors)
         {
-            Errors.AddRange(errors);
+            if (errors == null) throw new ArgumentNullException(nameof(errors));
+            _Errors.AddRange(errors);
         }
 
         #endregion
@@ -41,7 +48,7 @@ namespace Resulz
 
         public static OperationResult MakeSuccess() => new OperationResult();
 
-        public static OperationResult MakeFailure(params ErrorMessage[] errors) => new OperationResult(errors);
+        public static OperationResult MakeFailure(ErrorMessage error) => new OperationResult(new[] { error });
 
         public static OperationResult MakeFailure(IEnumerable<ErrorMessage> errors) => new OperationResult(errors);
 
@@ -49,25 +56,29 @@ namespace Resulz
 
         public OperationResult AppendError(ErrorMessage error)
         {
-            Errors.Add(error);
+            _Errors.Add(error);
             return this;
         }
 
         public OperationResult AppendErrors(IEnumerable<ErrorMessage> errors)
         {
-            Errors.AddRange(errors);
+            if (errors == null) throw new ArgumentNullException(nameof(errors));
+            _Errors.AddRange(errors);
             return this;
         }
 
         public OperationResult AppendContextPrefix(string contextPrefix)
         {
-            Errors.AppendContextPrefix(contextPrefix);
+            if (contextPrefix == null) throw new ArgumentNullException(nameof(contextPrefix));
+            _Errors.AppendContextPrefix(contextPrefix);
             return this;
         }
 
         public OperationResult TranslateContext(string oldContext, string newContext)
         {
-            Errors.TranslateContext(oldContext, newContext);
+            if (oldContext == null) throw new ArgumentNullException(nameof(oldContext));
+            if (newContext == null) throw new ArgumentNullException(nameof(newContext));
+            _Errors.TranslateContext(oldContext, newContext);
             return this;
         }
 

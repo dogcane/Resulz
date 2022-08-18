@@ -1,9 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Resulz.Validation;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Resulz.Validation.UnitTest
 {
@@ -24,7 +21,7 @@ namespace Resulz.Validation.UnitTest
 
         [TestMethod()]
         public void RequiredTestSuccesWithObject()
-        {            
+        {
             var objvalue = new { Name = "John", Surname = "Snow" };
             var result = OperationResult
                 .MakeSuccess()

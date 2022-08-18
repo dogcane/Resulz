@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Resulz
 {
-    public class ErrorMessageList : IEnumerable<ErrorMessage>
+    internal sealed class ErrorMessageList : IEnumerable<ErrorMessage>
     {
         #region Fields
 
@@ -33,11 +33,6 @@ namespace Resulz
             }
         }
 
-        public IEnumerator<ErrorMessage> GetEnumerator()
-        {
-            return _InnerList.GetEnumerator();
-        }
-
         public void TranslateContext(string oldContext, string newContext)
         {
             for (int i = 0; i < _InnerList.Count; i++)
@@ -48,6 +43,10 @@ namespace Resulz
                     _InnerList[i] = error.TranslateContext(newContext);
                 }
             }
+        }
+        public IEnumerator<ErrorMessage> GetEnumerator()
+        {
+            return _InnerList.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

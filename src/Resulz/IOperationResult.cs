@@ -1,4 +1,6 @@
-﻿namespace Resulz
+﻿using System.Collections.Generic;
+
+namespace Resulz
 {
     /// <summary>
     /// Represents a generic result of an operation
@@ -13,8 +15,6 @@
         /// <summary>
         /// Errors occurred during the execution of the operations
         /// </summary>
-        ErrorMessageList Errors { get; }
-
-
+        IEnumerable<ErrorMessage> Errors { get; }
     }
 }

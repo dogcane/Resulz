@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Resulz;
-using Resulz.Validation;
+﻿using Resulz.Validation;
+using System;
 
 namespace Resulz.Samples.Domain
 {

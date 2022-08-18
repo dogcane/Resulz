@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Andrea Canegrati</Authors>
     <Description>An "operation result" implementation with a "bit" of validation framework.</Description>
@@ -10,11 +10,9 @@
     <RepositoryUrl>https://github.com/dogcane/Resulz</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+	<AssemblyVersion>1.1.0.0</AssemblyVersion>
+	<FileVersion>1.1.0.0</FileVersion>
+	<Version>1.1.0</Version>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="OperationResultExtensions.cs~RF19dc2998.TMP" />
-    <None Remove="Validation\ValueChecker.cs~RF102fd8b5.TMP" />
-  </ItemGroup>
-
+	
 </Project>

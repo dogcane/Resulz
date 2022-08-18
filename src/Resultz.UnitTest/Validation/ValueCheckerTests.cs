@@ -1,10 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Resulz.Validation;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Resulz.Validation.Tests
+namespace Resulz.Validation.UnitTest
 {
     [TestClass()]
     public class ValueCheckerTests
@@ -33,7 +29,7 @@ namespace Resulz.Validation.Tests
         {
             var result = OperationResult.MakeSuccess();
             var strval = "hello";
-            var checker = new ValueChecker<string>(strval, result, nameof(strval));            
+            var checker = new ValueChecker<string>(strval, result, nameof(strval));
             Assert.IsTrue(checker.ContinueOnError);
             checker.StopOnError();
             Assert.IsFalse(checker.ContinueOnError);

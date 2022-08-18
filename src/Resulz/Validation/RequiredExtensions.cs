@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Resulz.Validation
+﻿namespace Resulz.Validation
 {
     public static class RequiredExtensions
     {
-        public static ValueChecker<T> Required<T>(this ValueChecker<T> checker) 
+        public static ValueChecker<T> Required<T>(this ValueChecker<T> checker)
             => Required(checker, string.Format("{0}_REQUIRED", checker.Context).ToUpper());
 
         public static ValueChecker<T> Required<T>(this ValueChecker<T> checker, string message)

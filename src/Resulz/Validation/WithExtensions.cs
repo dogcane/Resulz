@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Resulz.Validation
+﻿namespace Resulz.Validation
 {
     public static class WithExtensions
     {

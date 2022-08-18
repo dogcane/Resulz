@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Resulz.Validation
 {
@@ -11,8 +9,8 @@ namespace Resulz.Validation
             => Between(checker, firstValue, secondValue, string.Format("{0}_NOT_BETWEEN", checker.Context).ToUpper());
 
         public static ValueChecker<T> Between<T>(this ValueChecker<T> checker, T firstValue, T secondValue, string description) where T : IComparable<T>
-        {            
-            if (checker.CanContinue() && (Comparer.Default.Compare(checker.Value, firstValue) <= 0 || Comparer.Default.Compare(checker.Value, secondValue) >= 0)) 
+        {
+            if (checker.CanContinue() && (Comparer.Default.Compare(checker.Value, firstValue) <= 0 || Comparer.Default.Compare(checker.Value, secondValue) >= 0))
             {
                 checker.Result.AppendError(checker.Context, description);
             }

@@ -1,11 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Resulz.Validation;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 
-namespace Resulz.Validation.Tests
+namespace Resulz.Validation.UnitTest
 {
     [TestClass()]
     public class LessThenExtensionsTests

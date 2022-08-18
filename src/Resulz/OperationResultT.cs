@@ -8,8 +8,14 @@ namespace Resulz
     /// Represents the basic generic result of an operation, with a generic returning value
     /// </summary>
     [Serializable]
-    public class OperationResult<T> : IOperationResult
+    public sealed class OperationResult<T> : IOperationResult
     {
+        #region Fields
+
+        private ErrorMessageList _Errors = new ErrorMessageList();
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -20,12 +26,12 @@ namespace Resulz
         /// <summary>
         /// Valore restituito dall'operazione
         /// </summary>
-        public T Value { get; } = default(T);
+        public T Value { get; } = default;
 
         /// <summary>
         /// Errors occurred during the execution of the operations
         /// </summary>
-        public ErrorMessageList Errors { get; } = new ErrorMessageList();
+        public IEnumerable<ErrorMessage> Errors => _Errors;
 
         #endregion
 
@@ -38,7 +44,8 @@ namespace Resulz
 
         public OperationResult(IEnumerable<ErrorMessage> errors)
         {
-            Errors.AddRange(errors);
+            if (errors == null) throw new ArgumentNullException(nameof(errors));
+            _Errors.AddRange(errors);
         }
 
         #endregion
@@ -47,32 +54,37 @@ namespace Resulz
 
         public static OperationResult<T> MakeSuccess(T value) => new OperationResult<T>(value);
 
-        public static OperationResult<T> MakeFailure(params ErrorMessage[] errors) => new OperationResult<T>(errors);
+        public static OperationResult<T> MakeFailure(ErrorMessage error) => new OperationResult<T>(new[] { error });
 
         public static OperationResult<T> MakeFailure(IEnumerable<ErrorMessage> errors) => new OperationResult<T>(errors);
 
         public OperationResult<T> AppendError(string context, string description) => AppendError(ErrorMessage.Create(context, description));
 
-        public OperationResult<T> AppendError(ErrorMessage error) {
-            Errors.Add(error);
+        public OperationResult<T> AppendError(ErrorMessage error)
+        {
+            _Errors.Add(error);
             return this;
         }
 
         public OperationResult<T> AppendErrors(IEnumerable<ErrorMessage> errors)
         {
-            Errors.AddRange(errors);
+            if (errors == null) throw new ArgumentNullException(nameof(errors));
+            _Errors.AddRange(errors);
             return this;
         }
 
         public OperationResult<T> AppendContextPrefix(string contextPrefix)
         {
-            Errors.AppendContextPrefix(contextPrefix);
+            if (contextPrefix == null) throw new ArgumentNullException(nameof(contextPrefix));
+            _Errors.AppendContextPrefix(contextPrefix);
             return this;
         }
 
         public OperationResult<T> TranslateContext(string oldContext, string newContext)
         {
-            Errors.TranslateContext(oldContext, newContext);
+            if (oldContext == null) throw new ArgumentNullException(nameof(oldContext));
+            if (newContext == null) throw new ArgumentNullException(nameof(newContext));
+            _Errors.TranslateContext(oldContext, newContext);
             return this;
         }
 
@@ -86,16 +98,21 @@ namespace Resulz
 
         public static implicit operator OperationResult<T>(OperationResult result)
         {
+            if (result == null)
+                return null;
             if (result.Success)
                 throw new ArgumentException();
-            else
-                return OperationResult<T>.MakeFailure(result.Errors);
+            
+            return OperationResult<T>.MakeFailure(result.Errors);
         }
 
-        public static implicit operator OperationResult(OperationResult<T> result) =>
-            result.Success ?
+        public static implicit operator OperationResult(OperationResult<T> result) {
+            if (result == null) return null;
+
+            return result.Success?
                 OperationResult.MakeSuccess() :
                 OperationResult.MakeFailure(result.Errors);
+        }
 
         #endregion
     }

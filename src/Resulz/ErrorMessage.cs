@@ -1,5 +1,4 @@
-﻿using Resulz.Utils;
-using System;
+﻿using System;
 
 namespace Resulz
 {
@@ -18,6 +17,8 @@ namespace Resulz
         private ErrorMessage(string context, string description)
             : this()
         {
+            if (context == null) throw new ArgumentNullException(nameof(context));
+            if (description == null) throw new ArgumentNullException(nameof(description));
             Context = context;
             Description = description;
         }
@@ -32,22 +33,25 @@ namespace Resulz
 
         internal ErrorMessage AppendContextPrefix(string contextPrefix)
         {
+            if (contextPrefix == null) throw new ArgumentNullException(nameof(contextPrefix));
             Context = contextPrefix + Context;
             return this;
         }
 
         internal ErrorMessage TranslateContext(string newContext)
         {
+            if (newContext == null) throw new ArgumentNullException(nameof(newContext));
             Context = newContext;
             return this;
         }
 
         public override bool Equals(object obj)
         {
-            if (obj is ErrorMessage message)
-            {
+            if (obj == null)
+                return false;
+            if (obj is ErrorMessage message)            
                 return Equals(message);
-            }
+            
             throw new ArgumentException();
         }
 

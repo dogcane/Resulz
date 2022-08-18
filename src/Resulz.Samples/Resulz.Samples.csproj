@@ -2,13 +2,9 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Domain\LoanService.cs~RFf8c33c3.TMP" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Resulz\Resulz.csproj" />

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Resulz.Samples.Domain
+﻿namespace Resulz.Samples.Domain
 {
     public interface ILoanService
     {

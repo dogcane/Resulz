@@ -1,9 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Resulz;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Resulz.UnitTest
 {
@@ -11,7 +8,7 @@ namespace Resulz.UnitTest
     public class OperationResultTests
     {
         [TestMethod()]
-        public void OperationResultTest()
+        public void OperationResult_Empty_Costructor()
         {
             var result = new OperationResult();
             Assert.IsTrue(result.Success);
@@ -19,17 +16,25 @@ namespace Resulz.UnitTest
         }
 
         [TestMethod()]
-        public void OperationResultTest1()
+        public void OperationResult_Constructor_With_ErrorMessages()
         {
-            var error = ErrorMessage.Create("Prop", "Error");
-            var result = new OperationResult(new[] { error });
+            var errors = new[] {
+                ErrorMessage.Create("Prop", "Error"),
+                ErrorMessage.Create("Prop1", "Error1")
+            };
+            var result = new OperationResult(errors);
             Assert.IsFalse(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 1);
-            Assert.IsTrue(result.Errors.Contains(error));
+            CollectionAssert.AreEquivalent(result.Errors.ToArray(), errors);
         }
 
         [TestMethod()]
-        public void MakeSuccessTest()
+        public void OperationResult_Constructor_With_Null_ErrorMessages()
+        {            
+            Assert.ThrowsException<ArgumentNullException>(() => new OperationResult(null));
+        }
+
+        [TestMethod()]
+        public void MakeSuccess()
         {
             var result = OperationResult.MakeSuccess();
             Assert.IsTrue(result.Success);
@@ -37,100 +42,123 @@ namespace Resulz.UnitTest
         }
 
         [TestMethod()]
-        public void MakeFailureTest()
+        public void MakeFailure_With_ErrorMessage()
         {
             var error = ErrorMessage.Create("Prop", "Error");
             var result = OperationResult.MakeFailure(error);
             Assert.IsFalse(result.Success);
             Assert.IsTrue(result.Errors.Count() == 1);
-            Assert.IsTrue(result.Errors.Contains(error));
+            CollectionAssert.Contains(result.Errors.ToArray(), error);
         }
 
         [TestMethod()]
-        public void MakeFailureTest1()
+        public void MakeFailure_With_ErrorMessages()
         {
-            var error = ErrorMessage.Create("Prop", "Error");
-            var result = OperationResult.MakeFailure(new[] { error });
+            var errors = new[] {
+                ErrorMessage.Create("Prop1", "Error1"),
+                ErrorMessage.Create("Prop2", "Error2")
+            };
+            var result = OperationResult.MakeFailure(errors);
             Assert.IsFalse(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 1);
-            Assert.IsTrue(result.Errors.Contains(error));
+            CollectionAssert.AreEquivalent(errors, result.Errors.ToArray());
         }
 
         [TestMethod()]
-        public void AppendErrorTest()
+        public void MakeFailure_With_Null_ErrorMessages()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => OperationResult.MakeFailure(null));
+        }
+
+        [TestMethod()]
+        public void AppendError_With_Values()
         {
             var result = OperationResult.MakeSuccess();
-            Assert.IsTrue(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 0);
             result.AppendError("Prop", "Error");
             Assert.IsFalse(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 1);
-            Assert.IsTrue(result.Errors.Contains(ErrorMessage.Create("Prop", "Error")));
+            CollectionAssert.Contains(result.Errors.ToArray(), ErrorMessage.Create("Prop", "Error"));
         }
 
         [TestMethod()]
-        public void AppendErrorTest1()
+        public void AppendError_With_Null_Values()
         {
             var result = OperationResult.MakeSuccess();
-            Assert.IsTrue(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 0);
+            Assert.ThrowsException<ArgumentNullException>(() => result.AppendError(null, "Error"));
+            Assert.ThrowsException<ArgumentNullException>(() => result.AppendError("Prop", null));
+            Assert.ThrowsException<ArgumentNullException>(() => result.AppendError(null, null));            
+        }
+
+        [TestMethod()]
+        public void AppendError_With_ErrorMessage()
+        {
+            var result = OperationResult.MakeSuccess();
             var error = ErrorMessage.Create("Prop", "Error");
             result.AppendError(error);
             Assert.IsFalse(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 1);
-            Assert.IsTrue(result.Errors.Contains(error));
+            CollectionAssert.Contains(result.Errors.ToArray(), error);
         }
 
         [TestMethod()]
-        public void AppendErrorsTest()
+        public void AppendErrors_With_ErrorMessages()
         {
             var result = OperationResult.MakeSuccess();
-            Assert.IsTrue(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 0);
-            var error1 = ErrorMessage.Create("Prop1", "Error1");
-            var error2 = ErrorMessage.Create("Prop2", "Error2");
-            var errors = new [] { error1, error2 };
+            var errors = new [] {
+                ErrorMessage.Create("Prop1", "Error1"),
+                ErrorMessage.Create("Prop2", "Error2")
+            };
             result.AppendErrors(errors);
             Assert.IsFalse(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 2);
-            Assert.IsTrue(result.Errors.Contains(error1));
-            Assert.IsTrue(result.Errors.Contains(error2));
+            CollectionAssert.AreEquivalent(errors, result.Errors.ToArray());
         }
 
         [TestMethod()]
-        public void AppendContextPrefixTest()
+        public void AppendErrors_With_Null_ErrorMessages()
         {
             var result = OperationResult.MakeSuccess();
-            Assert.IsTrue(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 0);
-            var error = ErrorMessage.Create("Prop", "Error");
-            result.AppendError(error);
-            Assert.IsFalse(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 1);
-            Assert.IsTrue(result.Errors.Contains(error));
+            Assert.ThrowsException<ArgumentNullException>(() => result.AppendErrors(null));
+        }
+
+        [TestMethod()]
+        public void AppendContextPrefix_With_Value()
+        {
+            var result = OperationResult.MakeSuccess();
+            var errors = new[] {
+                ErrorMessage.Create("Prop1", "Error1"),
+                ErrorMessage.Create("Prop2", "Error2")
+            };
+            result.AppendErrors(errors);
             result.AppendContextPrefix("Prefix.");
-            Assert.IsFalse(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 1);
-            Assert.IsFalse(result.Errors.Contains(error));
-            Assert.IsTrue(result.Errors.Contains(ErrorMessage.Create("Prefix.Prop", "Error")));
+            foreach (var error in result.Errors)
+            {
+                StringAssert.StartsWith(error.Context, "Prefix.");
+            }
         }
 
         [TestMethod()]
-        public void TranslateContextTest()
+        public void AppendContextPrefix_With_Null_Value()
         {
             var result = OperationResult.MakeSuccess();
-            Assert.IsTrue(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 0);
+            Assert.ThrowsException<ArgumentNullException>(() => result.AppendContextPrefix(null));
+        }
+
+        [TestMethod()]
+        public void TranslateContext_With_Value()
+        {
             var error = ErrorMessage.Create("Prop", "Error");
-            result.AppendError(error);
-            Assert.IsFalse(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 1);
-            Assert.IsTrue(result.Errors.Contains(error));
+            var errorTranslated = ErrorMessage.Create("NewProp", "Error");
+            var result = OperationResult.MakeFailure(error);
+            CollectionAssert.Contains(result.Errors.ToArray(), error);
             result.TranslateContext("Prop", "NewProp");
-            Assert.IsFalse(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 1);
-            Assert.IsFalse(result.Errors.Contains(error));
-            Assert.IsTrue(result.Errors.Contains(ErrorMessage.Create("NewProp", "Error")));
+            CollectionAssert.DoesNotContain(result.Errors.ToArray(), error);
+            CollectionAssert.Contains(result.Errors.ToArray(), errorTranslated);
+        }
+
+        [TestMethod()]
+        public void TranslateContext_With_Null_Values()
+        {
+            var result = OperationResult.MakeFailure(ErrorMessage.Create("Prop", "Error"));
+            Assert.ThrowsException<ArgumentNullException>(() => result.TranslateContext("Prop", null));
+            Assert.ThrowsException<ArgumentNullException>(() => result.TranslateContext(null, "NewProp"));
+            Assert.ThrowsException<ArgumentNullException>(() => result.TranslateContext(null, null));
         }
     }
 }

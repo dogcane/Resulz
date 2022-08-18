@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Resulz.Validation
 {
     public static class ConditionExtensions
     {
         public static ValueChecker<T> Condition<T>(this ValueChecker<T> checker, Func<T, bool> validCondition)
-            => Condition<T>(checker, validCondition, string.Format("{0}_CONDITION_FAILED", checker.Context).ToUpper());        
+            => Condition<T>(checker, validCondition, string.Format("{0}_CONDITION_FAILED", checker.Context).ToUpper());
 
         public static ValueChecker<T> Condition<T>(this ValueChecker<T> checker, Func<T, bool> validCondition, string description)
         {
