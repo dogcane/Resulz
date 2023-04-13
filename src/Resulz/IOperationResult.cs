@@ -16,5 +16,10 @@ namespace Resulz
         /// Errors occurred during the execution of the operations
         /// </summary>
         IEnumerable<ErrorMessage> Errors { get; }
+
+        /// <summary>
+        /// Additional information about the result (custom status code, description, etc..)
+        /// </summary>
+        string AdditionalInfo { get; }
     }
 }

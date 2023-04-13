@@ -160,5 +160,42 @@ namespace Resulz.UnitTest
             Assert.ThrowsException<ArgumentNullException>(() => result.TranslateContext(null, "NewProp"));
             Assert.ThrowsException<ArgumentNullException>(() => result.TranslateContext(null, null));
         }
+
+        [TestMethod()]
+        public void AdditionalInfo_With_Value()
+        {
+            var result = OperationResult.MakeFailure(ErrorMessage.Create("Prop", "Error")).SetAdditionalInfo("my tag");
+            Assert.AreEqual("my tag", result.AdditionalInfo);
+        }
+
+        [TestMethod()]
+        public void AdditionalInfo_With_Empty_Value()
+        {
+            var result = OperationResult.MakeFailure(ErrorMessage.Create("Prop", "Error")).SetAdditionalInfo("");
+            Assert.AreEqual(string.Empty, result.AdditionalInfo);
+        }
+
+        [TestMethod()]
+        public void AdditionalInfo_With_Multiple_Values()
+        {
+            var result = OperationResult.MakeFailure(ErrorMessage.Create("Prop", "Error")).SetAdditionalInfo("my tag 01", "my tag 02");
+            Assert.AreEqual("my tag 01|my tag 02", result.AdditionalInfo);
+        }
+
+        [TestMethod()]
+        public void AdditionalInfo_With_Null_Value()
+        {
+            var result = OperationResult.MakeFailure(ErrorMessage.Create("Prop", "Error"));            
+            Assert.ThrowsException<ArgumentNullException>(() => result.SetAdditionalInfo(null));
+        }
+
+        [TestMethod()]
+        public void AdditionalInfo_With_And_Operator()
+        {
+            var result01 = OperationResult.MakeFailure(ErrorMessage.Create("Prop", "Error")).SetAdditionalInfo("my tag 01");
+            var result02 = OperationResult.MakeFailure(ErrorMessage.Create("Prop", "Error")).SetAdditionalInfo("my tag 02");
+            var result03 = result01 & result02;
+            Assert.AreEqual("my tag 01|my tag 02", result03.AdditionalInfo);
+        }
     }
 }

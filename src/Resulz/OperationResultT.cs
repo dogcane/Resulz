@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Resulz
 {
@@ -32,6 +33,11 @@ namespace Resulz
         /// Errors occurred during the execution of the operations
         /// </summary>
         public IEnumerable<ErrorMessage> Errors => _Errors;
+
+        /// <summary>
+        /// Additional information about the result (custom status code, description, etc..)
+        /// </summary>
+        public string AdditionalInfo { get; private set; } = string.Empty;
 
         #endregion
 
@@ -88,13 +94,36 @@ namespace Resulz
             return this;
         }
 
+        public OperationResult<T> SetAdditionalInfo(params string[] additionalInfo)
+        {
+            if (additionalInfo == null) throw new ArgumentNullException(nameof(additionalInfo));
+            if (additionalInfo.Length == 1)
+            {
+                AdditionalInfo = additionalInfo[0];
+            }
+            else if (additionalInfo.Length > 1)
+            {
+                StringBuilder builder = new StringBuilder();
+                foreach (string item in additionalInfo)
+                {
+                    if (builder.Length > 0)
+                    {
+                        builder.Append("|");
+                    }
+                    builder.Append(item);
+                }
+                AdditionalInfo = builder.ToString();
+            }
+            return this;
+        }
+
         public override string ToString() => $"Succes:{Success} - Error Count:{Errors.Count()}";
 
         #endregion
 
         #region Operators
 
-        public static implicit operator OperationResult<T>(T value) => OperationResult<T>.MakeSuccess(value);
+        public static implicit operator OperationResult<T>(T value) => MakeSuccess(value);
 
         public static implicit operator OperationResult<T>(OperationResult result)
         {
@@ -103,15 +132,15 @@ namespace Resulz
             if (result.Success)
                 throw new ArgumentException();
             
-            return OperationResult<T>.MakeFailure(result.Errors);
+            return MakeFailure(result.Errors).SetAdditionalInfo(result.AdditionalInfo);
         }
 
         public static implicit operator OperationResult(OperationResult<T> result) {
             if (result == null) return null;
 
-            return result.Success?
+            return (result.Success?
                 OperationResult.MakeSuccess() :
-                OperationResult.MakeFailure(result.Errors);
+                OperationResult.MakeFailure(result.Errors)).SetAdditionalInfo(result.AdditionalInfo);
         }
 
         #endregion

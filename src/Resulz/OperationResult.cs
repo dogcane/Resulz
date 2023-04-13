@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Resulz
 {
@@ -27,6 +28,11 @@ namespace Resulz
         /// Errors occurred during the execution of the operations
         /// </summary>
         public IEnumerable<ErrorMessage> Errors => _Errors;
+
+        /// <summary>
+        /// Additional information about the result (custom status code, description, etc..)
+        /// </summary>
+        public string AdditionalInfo { get; private set; } = string.Empty;
 
         #endregion
 
@@ -82,6 +88,29 @@ namespace Resulz
             return this;
         }
 
+        public OperationResult SetAdditionalInfo(params string[] additionalInfo)
+        {
+            if (additionalInfo == null) throw new ArgumentNullException(nameof(additionalInfo));
+            if (additionalInfo.Length == 1)
+            {
+                AdditionalInfo = additionalInfo[0];
+            }
+            else if (additionalInfo.Length > 1)
+            {
+                StringBuilder builder = new StringBuilder();
+                foreach(string item in additionalInfo)
+                {
+                    if (builder.Length > 0)
+                    {
+                        builder.Append("|");
+                    }
+                    builder.Append(item);
+                }
+                AdditionalInfo = builder.ToString();
+            }            
+            return this;
+        }
+
         public override string ToString() => $"Succes:{Success} - Error Count:{Errors.Count()}";
 
         #endregion
@@ -93,9 +122,9 @@ namespace Resulz
         public static bool operator false(OperationResult o) => !o.Success;
 
         public static OperationResult operator &(OperationResult o1, OperationResult o2) =>
-            (o1.Success && o2.Success) ?
+            ((o1.Success && o2.Success) ?
                 OperationResult.MakeSuccess() :
-                OperationResult.MakeFailure(o1.Errors.Concat(o2.Errors));
+                OperationResult.MakeFailure(o1.Errors.Concat(o2.Errors))).SetAdditionalInfo(o1.AdditionalInfo,o2.AdditionalInfo);
 
         #endregion
     }

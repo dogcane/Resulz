@@ -164,5 +164,70 @@ namespace Resulz.UnitTest
             Assert.ThrowsException<ArgumentNullException>(() => result.TranslateContext(null, "NewProp"));
             Assert.ThrowsException<ArgumentNullException>(() => result.TranslateContext(null, null));
         }
+
+        [TestMethod()]
+        public void AdditionalInfo_With_Value()
+        {
+            var result = OperationResult<int>.MakeFailure(ErrorMessage.Create("Prop", "Error")).SetAdditionalInfo("my tag");
+            Assert.AreEqual("my tag", result.AdditionalInfo);
+        }
+
+        [TestMethod()]
+        public void AdditionalInfo_With_Empty_Value()
+        {
+            var result = OperationResult<int>.MakeFailure(ErrorMessage.Create("Prop", "Error")).SetAdditionalInfo("");
+            Assert.AreEqual(string.Empty, result.AdditionalInfo);
+        }
+
+        [TestMethod()]
+        public void AdditionalInfo_With_Multiple_Values()
+        {
+            var result = OperationResult<int>.MakeFailure(ErrorMessage.Create("Prop", "Error")).SetAdditionalInfo("my tag 01", "my tag 02");
+            Assert.AreEqual("my tag 01|my tag 02", result.AdditionalInfo);
+        }
+
+        [TestMethod()]
+        public void AdditionalInfo_With_Null_Value()
+        {
+            var result = OperationResult<int>.MakeFailure(ErrorMessage.Create("Prop", "Error"));
+            Assert.ThrowsException<ArgumentNullException>(() => result.SetAdditionalInfo(null));
+        }
+
+        [TestMethod()]
+        public void Value_To_Success_Implicit_Operator()
+        {
+            int value = 0;
+            OperationResult<int> result = value;
+            Assert.AreEqual(value, result.Value);
+        }
+
+        [TestMethod()]
+        public void Failed_OperationResult_To_Failed_Implicit_Operator()
+        {
+            var errors = new[] {
+                ErrorMessage.Create("Prop1", "Error1"),
+                ErrorMessage.Create("Prop2", "Error2")
+            };
+            OperationResult result = OperationResult.MakeFailure(errors);
+            OperationResult<int> resultOfT = result;
+            Assert.IsFalse(resultOfT.Success);
+            CollectionAssert.AreEquivalent(errors, resultOfT.Errors.ToArray());
+        }
+
+        [TestMethod()]
+        public void Succeded_OperationResult_To_Success_Implicit_Operator()
+        {
+            OperationResult result = OperationResult.MakeSuccess();
+            OperationResult<int> resultOfT;
+            Assert.ThrowsException<ArgumentException>(() => resultOfT = result);
+        }
+
+        [TestMethod()]
+        public void Null_OperationResult_To_Null_Implicit_Operator()
+        {
+            OperationResult result = null;
+            OperationResult<int> resultOfT = result;
+            Assert.IsNull(resultOfT);
+        }
     }
 }
