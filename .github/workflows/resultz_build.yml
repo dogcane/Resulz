@@ -14,9 +14,6 @@ env:
   # Official NuGet Feed settings
   NUGET_FEED: https://api.nuget.org/v3/index.json
   NUGET_KEY: ${{ secrets.NUGET_KEY }}
-  # Github Packages Feed settings
-  GITHUB_PACKAGES_FEED: https://nuget.pkg.github.com/dogcane/index.json
-  GITHUB_PACKAGES_KEY: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build:
@@ -58,5 +55,3 @@ jobs:
         run: dotnet pack -v normal -c Release --no-restore --include-symbols --include-source src/Resulz/Resulz.csproj
       - name: Push NuGet Feed
         run: dotnet nuget push ./src/Resulz/bin/Release/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY
-      - name: Push Github Packages Feed
-        run: dotnet nuget push ./src/Resulz/bin/Release/*.nupkg --source $GITHUB_PACKAGES_FEED --skip-duplicate --api-key $GITHUB_PACKAGES_KEY
