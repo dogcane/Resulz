@@ -7,7 +7,7 @@
 
         public static ValueChecker<T> Required<T>(this ValueChecker<T> checker, string message)
         {
-            if (checker.CanContinue() && (((object)checker.Value) == null))
+            if (checker.CanContinue() && (checker.Value is null))
             {
                 checker.Result.AppendError(checker.Context, message);
             }
