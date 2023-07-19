@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Resulz
 {
@@ -40,6 +41,28 @@ namespace Resulz
             }
             return result;
         }
+
+        public static bool HasErrors(this IOperationResult result, string context, string description)
+        {
+            if (result == null) throw new ArgumentNullException(nameof(result));
+            if (context == null) throw new ArgumentNullException(nameof(context));
+            if (description == null) throw new ArgumentNullException(nameof(description));
+            return result.Errors.Any(e => string.Equals(e.Context, context, StringComparison.CurrentCultureIgnoreCase) && string.Equals(e.Description, description, StringComparison.CurrentCultureIgnoreCase));
+        }
+
+        public static bool HasErrorsByContext(this IOperationResult result, string context)
+        {
+            if (result == null) throw new ArgumentNullException(nameof(result));
+            if (context == null) throw new ArgumentNullException(nameof(context));
+            return result.Errors.Any(e => string.Equals(e.Context, context, StringComparison.CurrentCultureIgnoreCase));
+        }
+
+        public static bool HasErrorsByDescription(this IOperationResult result, string description)
+        {
+            if (result == null) throw new ArgumentNullException(nameof(result));
+            if (description == null) throw new ArgumentNullException(nameof(description));
+            return result.Errors.Any(e => string.Equals(e.Description, description, StringComparison.CurrentCultureIgnoreCase));
+        }        
 
         #endregion
     }
