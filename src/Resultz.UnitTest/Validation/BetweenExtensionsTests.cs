@@ -86,12 +86,15 @@ namespace Resulz.Validation.UnitTest
         }
 
         [TestMethod()]
-        public void BetweenTestFailWithNullValues()
+        [DataRow(null,null,null)]
+        [DataRow(null,"a","b")]
+        [DataRow("a",null,"b")]
+        [DataRow("a","b",null)]
+        public void BetweenTestFailWithNullValues(string? strvalue, string? firstValue, string? secondValue)
         {
-            var strvalue = "a";
             var result = OperationResult
                 .MakeSuccess()
-                .With(strvalue, nameof(strvalue)).Between(null, null)
+                .With(strvalue, nameof(strvalue)).Between(firstValue, secondValue)
                 .Result;
             var error = ErrorMessage.Create(nameof(strvalue), string.Format("{0}_NOT_BETWEEN", nameof(strvalue).ToUpper()));
             Assert.IsFalse(result.Success);

@@ -19,11 +19,11 @@ namespace Resulz
             return result;
         }
 
-        public static OperationResult<T> IfSuccessThenReturn<T>(this IOperationResult result, Func<T> factoryFunc)
+        public static OperationResult<T?> IfSuccessThenReturn<T>(this IOperationResult result, Func<T?> factoryFunc)
         {
             if (result == null) throw new ArgumentNullException(nameof(result));
             if (factoryFunc == null) throw new ArgumentNullException(nameof(factoryFunc));
-            return result.Success ? OperationResult<T>.MakeSuccess(factoryFunc()) : OperationResult<T>.MakeFailure(result.Errors);
+            return result.Success ? OperationResult<T?>.MakeSuccess(factoryFunc()) : OperationResult<T?>.MakeFailure(result.Errors);
         }
 
         #endregion

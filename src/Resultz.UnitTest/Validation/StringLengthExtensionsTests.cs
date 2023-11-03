@@ -9,9 +9,10 @@ namespace Resulz.Validation.UnitTest
     {
 
         [TestMethod()]
-        public void StringLengthTestSuccess()
+        [DataRow("value")]
+        [DataRow(null)]
+        public void StringLengthTestSuccess(string? strvalue)
         {
-            var strvalue = "value";
             var result = OperationResult
                 .MakeSuccess()
                 .With(strvalue, nameof(strvalue)).StringLength(10)

@@ -17,10 +17,8 @@ namespace Resulz
         private ErrorMessage(string context, string description)
             : this()
         {
-            if (context == null) throw new ArgumentNullException(nameof(context));
-            if (description == null) throw new ArgumentNullException(nameof(description));
-            Context = context;
-            Description = description;
+            Context = context ?? throw new ArgumentNullException(nameof(context));
+            Description = description ?? throw new ArgumentNullException(nameof(description));
         }
 
         #endregion
@@ -29,7 +27,7 @@ namespace Resulz
 
         public static ErrorMessage Create(string description) => Create(string.Empty, description);
 
-        public static ErrorMessage Create(string context, string description) => new ErrorMessage(context, description);
+        public static ErrorMessage Create(string context, string description) => new(context, description);
 
         internal ErrorMessage AppendContextPrefix(string contextPrefix)
         {
@@ -40,19 +38,18 @@ namespace Resulz
 
         internal ErrorMessage TranslateContext(string newContext)
         {
-            if (newContext == null) throw new ArgumentNullException(nameof(newContext));
-            Context = newContext;
+            Context = newContext ?? throw new ArgumentNullException(nameof(newContext));
             return this;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null)
                 return false;
             if (obj is ErrorMessage message)            
                 return Equals(message);
             
-            throw new ArgumentException();
+            throw new ArgumentException("The object is not of ErrorMessage", nameof(obj));
         }
 
         public bool Equals(ErrorMessage other) => (Context == other.Context && Description == other.Description);

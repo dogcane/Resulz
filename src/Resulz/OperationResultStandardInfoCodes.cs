@@ -13,10 +13,10 @@
         public static OperationResult SetNotFoundCode(this OperationResult operationResult) => operationResult.SetAdditionalInfo(NOT_FOUND);
         public static OperationResult SetNotValidCode(this OperationResult operationResult) => operationResult.SetAdditionalInfo(NOT_VALID);
         public static OperationResult SetGenericErrorCode(this OperationResult operationResult) => operationResult.SetAdditionalInfo(GENERIC_ERROR);
-        public static OperationResult<T> SetBadRequestCode<T>(this OperationResult<T> operationResult) => operationResult.SetAdditionalInfo(BAD_REQUEST);
-        public static OperationResult<T> SetNotAuthorizedCode<T>(this OperationResult<T> operationResult) => operationResult.SetAdditionalInfo(NOT_AUTHORIZED);
-        public static OperationResult<T> SetNotFoundCode<T>(this OperationResult<T> operationResult) => operationResult.SetAdditionalInfo(NOT_FOUND);
-        public static OperationResult<T> SetNotValidCode<T>(this OperationResult<T> operationResult) => operationResult.SetAdditionalInfo(NOT_VALID);
-        public static OperationResult<T> SetGenericErrorCode<T>(this OperationResult<T> operationResult) => operationResult.SetAdditionalInfo(GENERIC_ERROR);
+        public static OperationResult<T?> SetBadRequestCode<T>(this OperationResult<T?> operationResult) => operationResult.SetAdditionalInfo(BAD_REQUEST);
+        public static OperationResult<T?> SetNotAuthorizedCode<T>(this OperationResult<T?> operationResult) => operationResult.SetAdditionalInfo(NOT_AUTHORIZED);
+        public static OperationResult<T?> SetNotFoundCode<T>(this OperationResult<T?> operationResult) => operationResult.SetAdditionalInfo(NOT_FOUND);
+        public static OperationResult<T?> SetNotValidCode<T>(this OperationResult<T?> operationResult) => operationResult.SetAdditionalInfo(NOT_VALID);
+        public static OperationResult<T?> SetGenericErrorCode<T>(this OperationResult<T?> operationResult) => operationResult.SetAdditionalInfo(GENERIC_ERROR);
     }
 }

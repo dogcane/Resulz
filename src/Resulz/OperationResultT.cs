@@ -13,7 +13,7 @@ namespace Resulz
     {
         #region Fields
 
-        private ErrorMessageList _Errors = new ErrorMessageList();
+        private readonly ErrorMessageList _Errors = new();
 
         #endregion
 
@@ -27,7 +27,7 @@ namespace Resulz
         /// <summary>
         /// Valore restituito dall'operazione
         /// </summary>
-        public T Value { get; } = default;
+        public T? Value { get; } = default;
 
         /// <summary>
         /// Errors occurred during the execution of the operations
@@ -58,35 +58,35 @@ namespace Resulz
 
         #region Methods
 
-        public static OperationResult<T> MakeSuccess(T value) => new OperationResult<T>(value);
+        public static OperationResult<T?> MakeSuccess(T value) => new(value);
 
-        public static OperationResult<T> MakeFailure(ErrorMessage error) => new OperationResult<T>(new[] { error });
+        public static OperationResult<T?> MakeFailure(ErrorMessage error) => new(new[] { error });
 
-        public static OperationResult<T> MakeFailure(IEnumerable<ErrorMessage> errors) => new OperationResult<T>(errors);
+        public static OperationResult<T?> MakeFailure(IEnumerable<ErrorMessage> errors) => new(errors);
 
-        public OperationResult<T> AppendError(string context, string description) => AppendError(ErrorMessage.Create(context, description));
+        public OperationResult<T?> AppendError(string context, string description) => AppendError(ErrorMessage.Create(context, description));
 
-        public OperationResult<T> AppendError(ErrorMessage error)
+        public OperationResult<T?> AppendError(ErrorMessage error)
         {
             _Errors.Add(error);
             return this;
         }
 
-        public OperationResult<T> AppendErrors(IEnumerable<ErrorMessage> errors)
+        public OperationResult<T?> AppendErrors(IEnumerable<ErrorMessage> errors)
         {
             if (errors == null) throw new ArgumentNullException(nameof(errors));
             _Errors.AddRange(errors);
             return this;
         }
 
-        public OperationResult<T> AppendContextPrefix(string contextPrefix)
+        public OperationResult<T?> AppendContextPrefix(string contextPrefix)
         {
             if (contextPrefix == null) throw new ArgumentNullException(nameof(contextPrefix));
             _Errors.AppendContextPrefix(contextPrefix);
             return this;
         }
 
-        public OperationResult<T> TranslateContext(string oldContext, string newContext)
+        public OperationResult<T?> TranslateContext(string oldContext, string newContext)
         {
             if (oldContext == null) throw new ArgumentNullException(nameof(oldContext));
             if (newContext == null) throw new ArgumentNullException(nameof(newContext));
@@ -94,7 +94,7 @@ namespace Resulz
             return this;
         }
 
-        public OperationResult<T> SetAdditionalInfo(params string[] additionalInfo)
+        public OperationResult<T?> SetAdditionalInfo(params string[] additionalInfo)
         {
             if (additionalInfo == null) throw new ArgumentNullException(nameof(additionalInfo));
             if (additionalInfo.Length == 1)
@@ -103,12 +103,12 @@ namespace Resulz
             }
             else if (additionalInfo.Length > 1)
             {
-                StringBuilder builder = new StringBuilder();
+                StringBuilder builder = new();
                 foreach (string item in additionalInfo)
                 {
                     if (builder.Length > 0)
                     {
-                        builder.Append("|");
+                        builder.Append('|');
                     }
                     builder.Append(item);
                 }
@@ -123,19 +123,19 @@ namespace Resulz
 
         #region Operators
 
-        public static implicit operator OperationResult<T>(T value) => MakeSuccess(value);
+        public static implicit operator OperationResult<T?>(T value) => MakeSuccess(value);
 
-        public static implicit operator OperationResult<T>(OperationResult result)
+        public static implicit operator OperationResult<T?>?(OperationResult result)
         {
             if (result == null)
                 return null;
             if (result.Success)
-                throw new ArgumentException();
+                throw new ArgumentException("The result must be a failure", nameof(result));
             
             return MakeFailure(result.Errors).SetAdditionalInfo(result.AdditionalInfo);
         }
 
-        public static implicit operator OperationResult(OperationResult<T> result) {
+        public static implicit operator OperationResult?(OperationResult<T?> result) {
             if (result == null) return null;
 
             return (result.Success?
