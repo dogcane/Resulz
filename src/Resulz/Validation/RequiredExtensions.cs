@@ -2,10 +2,10 @@
 {
     public static class RequiredExtensions
     {
-        public static ValueChecker<T> Required<T>(this ValueChecker<T> checker)
+        public static ValueChecker<T?> Required<T>(this ValueChecker<T?> checker)
             => Required(checker, string.Format("{0}_REQUIRED", checker.Context).ToUpper());
 
-        public static ValueChecker<T> Required<T>(this ValueChecker<T> checker, string message)
+        public static ValueChecker<T?> Required<T>(this ValueChecker<T?> checker, string message)
         {
             if (checker.CanContinue() && (checker.Value is null))
             {
@@ -14,10 +14,10 @@
             return checker;
         }
 
-        public static ValueChecker<string> Required(this ValueChecker<string> checker)
+        public static ValueChecker<string?> Required(this ValueChecker<string?> checker)
             => Required(checker, string.Format("{0}_REQUIRED", checker.Context).ToUpper());
 
-        public static ValueChecker<string> Required(this ValueChecker<string> checker, string message)
+        public static ValueChecker<string?> Required(this ValueChecker<string?> checker, string message)
         {
             if (checker.CanContinue() && (string.IsNullOrEmpty(checker.Value as string)))
             {

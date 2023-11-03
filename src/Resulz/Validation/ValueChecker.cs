@@ -4,7 +4,7 @@
     {
         #region Properties
 
-        public T Value { get; private set; }
+        public T? Value { get; private set; }
 
         public OperationResult Result { get; private set; }
 
@@ -16,7 +16,7 @@
 
         #region Ctor
 
-        public ValueChecker(T value, OperationResult result, string context)
+        public ValueChecker(T? value, OperationResult result, string context)
         {
             Value = value;
             Result = result;
@@ -30,7 +30,7 @@
 
         //public static ValueChecker<T> For(T value, OperationResult result, string context) => new ValueChecker<T>(value, result, context);
 
-        public ValueChecker<T> StopOnError()
+        public ValueChecker<T?> StopOnError()
         {
             ContinueOnError = false;
             return this;
@@ -45,7 +45,7 @@
 
         #region Operators
 
-        public static implicit operator OperationResult(ValueChecker<T> checker) => checker.Result;
+        public static implicit operator OperationResult(ValueChecker<T?> checker) => checker.Result;
 
         #endregion
     }
