@@ -55,35 +55,35 @@ namespace Resulz
 
         #region Methods
 
-        public static OperationResult<T?> MakeSuccess(T value) => new(value);
+        public static OperationResult<T> MakeSuccess(T value) => new(value);
 
-        public static OperationResult<T?> MakeFailure(ErrorMessage error) => new(new[] { error });
+        public static OperationResult<T> MakeFailure(ErrorMessage error) => new(new[] { error });
 
-        public static OperationResult<T?> MakeFailure(IEnumerable<ErrorMessage> errors) => new(errors);
+        public static OperationResult<T> MakeFailure(IEnumerable<ErrorMessage> errors) => new(errors);
 
-        public OperationResult<T?> AppendError(string context, string description) => AppendError(ErrorMessage.Create(context, description));
+        public OperationResult<T> AppendError(string context, string description) => AppendError(ErrorMessage.Create(context, description));
 
-        public OperationResult<T?> AppendError(ErrorMessage error)
+        public OperationResult<T> AppendError(ErrorMessage error)
         {
             _Errors.Add(error);
             return this;
         }
 
-        public OperationResult<T?> AppendErrors(IEnumerable<ErrorMessage> errors)
+        public OperationResult<T> AppendErrors(IEnumerable<ErrorMessage> errors)
         {
             ArgumentNullException.ThrowIfNull(errors, nameof(errors));
             _Errors.AddRange(errors);
             return this;
         }
 
-        public OperationResult<T?> AppendContextPrefix(string contextPrefix)
+        public OperationResult<T> AppendContextPrefix(string contextPrefix)
         {
             ArgumentNullException.ThrowIfNull(contextPrefix, nameof(contextPrefix));
             _Errors.AppendContextPrefix(contextPrefix);
             return this;
         }
 
-        public OperationResult<T?> TranslateContext(string oldContext, string newContext)
+        public OperationResult<T> TranslateContext(string oldContext, string newContext)
         {
             ArgumentNullException.ThrowIfNull(oldContext, nameof(oldContext));
             ArgumentNullException.ThrowIfNull(newContext, nameof(newContext));
@@ -91,7 +91,7 @@ namespace Resulz
             return this;
         }
 
-        public OperationResult<T?> SetAdditionalInfo(params string[] additionalInfo)
+        public OperationResult<T> SetAdditionalInfo(params string[] additionalInfo)
         {
             ArgumentNullException.ThrowIfNull(additionalInfo, nameof(additionalInfo));
             if (additionalInfo.Length == 1)
@@ -120,9 +120,9 @@ namespace Resulz
 
         #region Operators
 
-        public static implicit operator OperationResult<T?>(T value) => MakeSuccess(value);
+        public static implicit operator OperationResult<T>(T value) => MakeSuccess(value);
 
-        public static implicit operator OperationResult<T?>?(OperationResult result)
+        public static implicit operator OperationResult<T>(OperationResult result)
         {
             ArgumentNullException.ThrowIfNull(result, nameof(result));
             if (result.Success)
@@ -130,7 +130,7 @@ namespace Resulz
             return MakeFailure(result.Errors).SetAdditionalInfo(result.AdditionalInfo);
         }
 
-        public static implicit operator OperationResult?(OperationResult<T?> result)
+        public static implicit operator OperationResult(OperationResult<T> result)
         {
             ArgumentNullException.ThrowIfNull(result, nameof(result));
             return (result.Success?

@@ -8,21 +8,15 @@ namespace Resulz
     {
         #region Fields
 
-        private List<ErrorMessage> _InnerList = new List<ErrorMessage>();
+        private readonly List<ErrorMessage> _InnerList = new();
 
         #endregion
 
         #region Methods
 
-        public void Add(ErrorMessage error)
-        {
-            _InnerList.Add(error);
-        }
+        public void Add(ErrorMessage error) => _InnerList.Add(error);
 
-        public void AddRange(IEnumerable<ErrorMessage> errorLists)
-        {
-            _InnerList.AddRange(errorLists);
-        }
+        public void AddRange(IEnumerable<ErrorMessage> errorLists) => _InnerList.AddRange(errorLists);
 
         public void AppendContextPrefix(string contextPrefix)
         {
@@ -44,15 +38,10 @@ namespace Resulz
                 }
             }
         }
-        public IEnumerator<ErrorMessage> GetEnumerator()
-        {
-            return _InnerList.GetEnumerator();
-        }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _InnerList.GetEnumerator();
-        }
+        public IEnumerator<ErrorMessage> GetEnumerator() => _InnerList.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => _InnerList.GetEnumerator();
 
         #endregion
     }

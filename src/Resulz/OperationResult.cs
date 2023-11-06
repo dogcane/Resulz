@@ -13,7 +13,7 @@ namespace Resulz
     {
         #region Fields
 
-        private readonly ErrorMessageList _Errors = new ErrorMessageList();
+        private readonly ErrorMessageList _Errors = new();
 
         #endregion
 

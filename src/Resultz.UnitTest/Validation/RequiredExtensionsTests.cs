@@ -15,8 +15,8 @@ namespace Resulz.Validation.UnitTest
                 .MakeSuccess()
                 .With(strvalue, nameof(strvalue)).Required()
                 .Result;
-            Assert.IsTrue(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 0);
+            Assert.IsTrue(result.Success);            
+            Assert.IsFalse(result.Errors.Any());
         }
 
         [TestMethod()]
@@ -28,7 +28,7 @@ namespace Resulz.Validation.UnitTest
                 .With(objvalue, nameof(objvalue)).Required()
                 .Result;
             Assert.IsTrue(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 0);
+            Assert.IsFalse(result.Errors.Any());
         }
 
         [TestMethod()]
@@ -48,7 +48,7 @@ namespace Resulz.Validation.UnitTest
         [TestMethod()]
         public void RequiredTestFailWithObject()
         {
-            object objvalue = null;
+            object? objvalue = null;
             var result = OperationResult
                 .MakeSuccess()
                 .With(objvalue, nameof(objvalue)).Required()

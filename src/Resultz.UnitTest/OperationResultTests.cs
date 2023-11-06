@@ -87,9 +87,11 @@ namespace Resulz.UnitTest
         public void AppendError_With_Null_Values()
         {
             var result = OperationResult.MakeSuccess();
+#pragma warning disable CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
             Assert.ThrowsException<ArgumentNullException>(() => result.AppendError(null, "Error"));
             Assert.ThrowsException<ArgumentNullException>(() => result.AppendError("Prop", null));
-            Assert.ThrowsException<ArgumentNullException>(() => result.AppendError(null, null));            
+            Assert.ThrowsException<ArgumentNullException>(() => result.AppendError(null, null));
+#pragma warning restore CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
         }
 
         [TestMethod()]

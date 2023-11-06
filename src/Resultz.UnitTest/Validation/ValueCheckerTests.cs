@@ -10,7 +10,7 @@ namespace Resulz.Validation.UnitTest
         {
             var result = OperationResult.MakeSuccess();
             var strval = "hello";
-            var checker = new ValueChecker<string>(strval, result, nameof(strval));
+            var checker = new ValueChecker<string?>(strval, result, nameof(strval));
             var resultNew = (OperationResult)checker;
             Assert.AreEqual(result, checker.Result);
             Assert.AreEqual(result, resultNew);
@@ -40,7 +40,7 @@ namespace Resulz.Validation.UnitTest
         {
             var result = OperationResult.MakeSuccess();
             var strval = "hello";
-            var checker = new ValueChecker<string>(strval, result, nameof(strval));
+            var checker = new ValueChecker<string?>(strval, result, nameof(strval));
             Assert.IsTrue(checker.CanContinue());
             checker.StopOnError();
             Assert.IsTrue(checker.CanContinue());
@@ -52,11 +52,11 @@ namespace Resulz.Validation.UnitTest
         public void CanContinueTestWithChain()
         {
             var result = OperationResult.MakeSuccess();
-            string strval = null;
-            var checker = new ValueChecker<string>(strval, result, nameof(strval))
+            string? strval = null;
+            var checker = new ValueChecker<string?>(strval, result, nameof(strval))
                 .StopOnError()
                 .Required()
-                .Condition(val => val.Contains("hello"));
+                .Condition(val => val?.Contains("hello") ?? false);
             Assert.IsFalse(checker.CanContinue());
             Assert.IsFalse(checker.Result.Success);
         }

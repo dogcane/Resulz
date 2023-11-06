@@ -12,7 +12,7 @@ namespace Resulz.UnitTest
         {
             var result = new OperationResult<int>(0);
             Assert.IsTrue(result.Success);
-            Assert.IsTrue(result.Errors.Count() == 0);
+            Assert.IsFalse(result.Errors.Any());
             Assert.AreEqual(result.Value, 0);
         }
 
@@ -31,15 +31,17 @@ namespace Resulz.UnitTest
         [TestMethod()]
         public void OperationResultOfT_Constructor_With_Null_ErrorMessages()
         {
+#pragma warning disable CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
             Assert.ThrowsException<ArgumentNullException>(() => new OperationResult<int>(null));
+#pragma warning restore CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
         }
 
         [TestMethod()]
         public void MakeSuccess()
         {
             var result = OperationResult<int>.MakeSuccess(0);
-            Assert.IsTrue(result.Success);            
-            Assert.IsTrue(result.Errors.Count() == 0);
+            Assert.IsTrue(result.Success);
+            Assert.IsFalse(result.Errors.Any());
             Assert.AreEqual(result.Value, 0);
         }
 
@@ -88,9 +90,11 @@ namespace Resulz.UnitTest
         public void AppendError_With_Null_Values()
         {
             var result = OperationResult<int>.MakeSuccess(0);
+#pragma warning disable CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
             Assert.ThrowsException<ArgumentNullException>(() => result.AppendError(null, "Error"));
             Assert.ThrowsException<ArgumentNullException>(() => result.AppendError("Prop", null));
             Assert.ThrowsException<ArgumentNullException>(() => result.AppendError(null, null));
+#pragma warning restore CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
         }
 
         [TestMethod()]
@@ -121,7 +125,9 @@ namespace Resulz.UnitTest
         public void AppendErrors_With_Null_ErrorMessages()
         {
             var result = OperationResult<int>.MakeSuccess(0);
+#pragma warning disable CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
             Assert.ThrowsException<ArgumentNullException>(() => result.AppendErrors(null));
+#pragma warning restore CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
         }
 
         [TestMethod()]
@@ -144,7 +150,9 @@ namespace Resulz.UnitTest
         public void AppendContextPrefix_With_Null_Value()
         {
             var result = OperationResult<int>.MakeSuccess(0);
+#pragma warning disable CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
             Assert.ThrowsException<ArgumentNullException>(() => result.AppendContextPrefix(null));
+#pragma warning restore CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
         }
 
         [TestMethod()]
@@ -163,9 +171,11 @@ namespace Resulz.UnitTest
         public void TranslateContext_With_Null_Values()
         {
             var result = OperationResult<int>.MakeFailure(ErrorMessage.Create("Prop", "Error"));
+#pragma warning disable CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
             Assert.ThrowsException<ArgumentNullException>(() => result.TranslateContext("Prop", null));
             Assert.ThrowsException<ArgumentNullException>(() => result.TranslateContext(null, "NewProp"));
             Assert.ThrowsException<ArgumentNullException>(() => result.TranslateContext(null, null));
+#pragma warning restore CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
         }
 
         [TestMethod()]
@@ -193,7 +203,9 @@ namespace Resulz.UnitTest
         public void AdditionalInfo_With_Null_Value()
         {
             var result = OperationResult<int>.MakeFailure(ErrorMessage.Create("Prop", "Error"));
+#pragma warning disable CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
             Assert.ThrowsException<ArgumentNullException>(() => result.SetAdditionalInfo(null));
+#pragma warning restore CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
         }
 
         [TestMethod()]
@@ -228,9 +240,11 @@ namespace Resulz.UnitTest
         [TestMethod()]
         public void Null_OperationResult_To_Null_Implicit_Operator_Throws_Exception()
         {
-            OperationResult result = null;
+            OperationResult? result = null;
             OperationResult<int> resultOfT;
+#pragma warning disable CS8604 // Possibile argomento di riferimento Null.
             Assert.ThrowsException<ArgumentNullException>(() => resultOfT = result);
+#pragma warning restore CS8604 // Possibile argomento di riferimento Null.
         }
     }
 }

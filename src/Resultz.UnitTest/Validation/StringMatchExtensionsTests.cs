@@ -49,7 +49,7 @@ namespace Resulz.Validation.UnitTest
 
         public void StringMatchTestFailWithNullValue()
         {
-            string strvalue = null;
+            string? strvalue = null;
             var result = OperationResult
                 .MakeSuccess()
                 .With(strvalue, nameof(strvalue)).StringMatch("va\\w+e", RegexOptions.Compiled)

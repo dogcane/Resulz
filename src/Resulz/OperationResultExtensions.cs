@@ -20,11 +20,11 @@ namespace Resulz
             return result;
         }
 
-        public static OperationResult<T?> IfSuccessThenReturn<T>(this IOperationResult result, Func<T?> factoryFunc)
+        public static OperationResult<T> IfSuccessThenReturn<T>(this IOperationResult result, Func<T> factoryFunc)
         {
             if (result == null) throw new ArgumentNullException(nameof(result));
             if (factoryFunc == null) throw new ArgumentNullException(nameof(factoryFunc));
-            return result.Success ? OperationResult<T?>.MakeSuccess(factoryFunc()) : OperationResult<T?>.MakeFailure(result.Errors);
+            return result.Success ? OperationResult<T>.MakeSuccess(factoryFunc()) : OperationResult<T>.MakeFailure(result.Errors);
         }
 
         #endregion
@@ -70,23 +70,23 @@ namespace Resulz
 
         public static bool HasErrors(this IOperationResult result, string context, string description)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
-            if (context == null) throw new ArgumentNullException(nameof(context));
-            if (description == null) throw new ArgumentNullException(nameof(description));
+            ArgumentNullException.ThrowIfNull(result, nameof(result));
+            ArgumentNullException.ThrowIfNull(context, nameof(context));
+            ArgumentNullException.ThrowIfNull(description, nameof(description));
             return result.Errors.Any(e => string.Equals(e.Context, context, StringComparison.CurrentCultureIgnoreCase) && string.Equals(e.Description, description, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public static bool HasErrorsByContext(this IOperationResult result, string context)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
-            if (context == null) throw new ArgumentNullException(nameof(context));
+            ArgumentNullException.ThrowIfNull(result, nameof(result));
+            ArgumentNullException.ThrowIfNull(context, nameof(context));
             return result.Errors.Any(e => string.Equals(e.Context, context, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public static bool HasErrorsByDescription(this IOperationResult result, string description)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
-            if (description == null) throw new ArgumentNullException(nameof(description));
+            ArgumentNullException.ThrowIfNull(result, nameof(result));
+            ArgumentNullException.ThrowIfNull(description, nameof(description));
             return result.Errors.Any(e => string.Equals(e.Description, description, StringComparison.CurrentCultureIgnoreCase));
         }        
 
