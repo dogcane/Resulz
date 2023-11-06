@@ -13,7 +13,7 @@ namespace Resulz
     {
         #region Fields
 
-        private ErrorMessageList _Errors = new ErrorMessageList();
+        private readonly ErrorMessageList _Errors = new ErrorMessageList();
 
         #endregion
 
@@ -44,7 +44,7 @@ namespace Resulz
 
         public OperationResult(IEnumerable<ErrorMessage> errors)
         {
-            if (errors == null) throw new ArgumentNullException(nameof(errors));
+            ArgumentNullException.ThrowIfNull(errors, nameof(errors));
             _Errors.AddRange(errors);
         }
 
@@ -52,11 +52,11 @@ namespace Resulz
 
         #region Methods
 
-        public static OperationResult MakeSuccess() => new OperationResult();
+        public static OperationResult MakeSuccess() => new();
 
-        public static OperationResult MakeFailure(ErrorMessage error) => new OperationResult(new[] { error });
+        public static OperationResult MakeFailure(ErrorMessage error) => new(new[] { error });
 
-        public static OperationResult MakeFailure(IEnumerable<ErrorMessage> errors) => new OperationResult(errors);
+        public static OperationResult MakeFailure(IEnumerable<ErrorMessage> errors) => new(errors);
 
         public OperationResult AppendError(string context, string description) => AppendError(ErrorMessage.Create(context, description));
 
@@ -68,41 +68,41 @@ namespace Resulz
 
         public OperationResult AppendErrors(IEnumerable<ErrorMessage> errors)
         {
-            if (errors == null) throw new ArgumentNullException(nameof(errors));
+            ArgumentNullException.ThrowIfNull(errors, nameof(errors));            
             _Errors.AddRange(errors);
             return this;
         }
 
         public OperationResult AppendContextPrefix(string contextPrefix)
         {
-            if (contextPrefix == null) throw new ArgumentNullException(nameof(contextPrefix));
+            ArgumentNullException.ThrowIfNull(contextPrefix, nameof(contextPrefix));
             _Errors.AppendContextPrefix(contextPrefix);
             return this;
         }
 
         public OperationResult TranslateContext(string oldContext, string newContext)
         {
-            if (oldContext == null) throw new ArgumentNullException(nameof(oldContext));
-            if (newContext == null) throw new ArgumentNullException(nameof(newContext));
+            ArgumentNullException.ThrowIfNull(oldContext, nameof(oldContext));
+            ArgumentNullException.ThrowIfNull(newContext, nameof(newContext));
             _Errors.TranslateContext(oldContext, newContext);
             return this;
         }
 
         public OperationResult SetAdditionalInfo(params string[] additionalInfo)
         {
-            if (additionalInfo == null) throw new ArgumentNullException(nameof(additionalInfo));
+            ArgumentNullException.ThrowIfNull(additionalInfo, nameof(additionalInfo));
             if (additionalInfo.Length == 1)
             {
                 AdditionalInfo = additionalInfo[0];
             }
             else if (additionalInfo.Length > 1)
             {
-                StringBuilder builder = new StringBuilder();
+                StringBuilder builder = new();
                 foreach(string item in additionalInfo)
                 {
                     if (builder.Length > 0)
                     {
-                        builder.Append("|");
+                        builder.Append('|');
                     }
                     builder.Append(item);
                 }

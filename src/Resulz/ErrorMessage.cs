@@ -15,7 +15,6 @@ namespace Resulz
         #region Ctor
 
         private ErrorMessage(string context, string description)
-            : this()
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
             Description = description ?? throw new ArgumentNullException(nameof(description));
@@ -31,7 +30,7 @@ namespace Resulz
 
         internal ErrorMessage AppendContextPrefix(string contextPrefix)
         {
-            if (contextPrefix == null) throw new ArgumentNullException(nameof(contextPrefix));
+            ArgumentNullException.ThrowIfNull(contextPrefix, nameof(contextPrefix));
             Context = contextPrefix + Context;
             return this;
         }
@@ -52,11 +51,15 @@ namespace Resulz
             throw new ArgumentException("The object is not of ErrorMessage", nameof(obj));
         }
 
-        public bool Equals(ErrorMessage other) => (Context == other.Context && Description == other.Description);
+        public bool Equals(ErrorMessage other) => (string.Equals(Context,other.Context) && string.Equals(Description,other.Description));
 
         public override int GetHashCode() => HashCode.Combine(Context, Description);
 
         public override string ToString() => $"{Context} : {Description}";
+
+        public static bool operator ==(ErrorMessage left, ErrorMessage right) => left.Equals(right);
+
+        public static bool operator !=(ErrorMessage left, ErrorMessage right) => !(left == right);
 
         #endregion
     }

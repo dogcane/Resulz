@@ -43,14 +43,11 @@ namespace Resulz
 
         #region Ctor
 
-        public OperationResult(T value)
-        {
-            Value = value;
-        }
+        public OperationResult(T value) => Value = value;
 
         public OperationResult(IEnumerable<ErrorMessage> errors)
         {
-            if (errors == null) throw new ArgumentNullException(nameof(errors));
+            ArgumentNullException.ThrowIfNull(errors, nameof(errors));
             _Errors.AddRange(errors);
         }
 
@@ -74,29 +71,29 @@ namespace Resulz
 
         public OperationResult<T?> AppendErrors(IEnumerable<ErrorMessage> errors)
         {
-            if (errors == null) throw new ArgumentNullException(nameof(errors));
+            ArgumentNullException.ThrowIfNull(errors, nameof(errors));
             _Errors.AddRange(errors);
             return this;
         }
 
         public OperationResult<T?> AppendContextPrefix(string contextPrefix)
         {
-            if (contextPrefix == null) throw new ArgumentNullException(nameof(contextPrefix));
+            ArgumentNullException.ThrowIfNull(contextPrefix, nameof(contextPrefix));
             _Errors.AppendContextPrefix(contextPrefix);
             return this;
         }
 
         public OperationResult<T?> TranslateContext(string oldContext, string newContext)
         {
-            if (oldContext == null) throw new ArgumentNullException(nameof(oldContext));
-            if (newContext == null) throw new ArgumentNullException(nameof(newContext));
+            ArgumentNullException.ThrowIfNull(oldContext, nameof(oldContext));
+            ArgumentNullException.ThrowIfNull(newContext, nameof(newContext));
             _Errors.TranslateContext(oldContext, newContext);
             return this;
         }
 
         public OperationResult<T?> SetAdditionalInfo(params string[] additionalInfo)
         {
-            if (additionalInfo == null) throw new ArgumentNullException(nameof(additionalInfo));
+            ArgumentNullException.ThrowIfNull(additionalInfo, nameof(additionalInfo));
             if (additionalInfo.Length == 1)
             {
                 AdditionalInfo = additionalInfo[0];
@@ -127,17 +124,15 @@ namespace Resulz
 
         public static implicit operator OperationResult<T?>?(OperationResult result)
         {
-            if (result == null)
-                return null;
+            ArgumentNullException.ThrowIfNull(result, nameof(result));
             if (result.Success)
-                throw new ArgumentException("The result must be a failure", nameof(result));
-            
+                throw new ArgumentException("The result must be a failure", nameof(result));            
             return MakeFailure(result.Errors).SetAdditionalInfo(result.AdditionalInfo);
         }
 
-        public static implicit operator OperationResult?(OperationResult<T?> result) {
-            if (result == null) return null;
-
+        public static implicit operator OperationResult?(OperationResult<T?> result)
+        {
+            ArgumentNullException.ThrowIfNull(result, nameof(result));
             return (result.Success?
                 OperationResult.MakeSuccess() :
                 OperationResult.MakeFailure(result.Errors)).SetAdditionalInfo(result.AdditionalInfo);

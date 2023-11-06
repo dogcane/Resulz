@@ -1,9 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Resulz.UnitTest
 {
@@ -21,7 +17,9 @@ namespace Resulz.UnitTest
         [TestMethod()]
         public void Create_With_Null_Description()
         {
+#pragma warning disable CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
             Assert.ThrowsException<ArgumentNullException>(() => ErrorMessage.Create(null));
+#pragma warning restore CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
         }
 
         [TestMethod()]
@@ -35,9 +33,11 @@ namespace Resulz.UnitTest
         [TestMethod()]
         public void Create_With_Null_Values()
         {
+#pragma warning disable CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
             Assert.ThrowsException<ArgumentNullException>(() => ErrorMessage.Create(null, "description"));
             Assert.ThrowsException<ArgumentNullException>(() => ErrorMessage.Create("context", null));
             Assert.ThrowsException<ArgumentNullException>(() => ErrorMessage.Create(null, null));
+#pragma warning restore CS8625 // Non è possibile convertire il valore letterale Null in tipo riferimento che non ammette i valori Null.
         }
 
         [TestMethod()]
@@ -60,7 +60,7 @@ namespace Resulz.UnitTest
         public void Equals_With_Wrong_Object()
         {
             var error = ErrorMessage.Create("context", "description");
-            object otherError = new object();
+            object otherError = new();
             Assert.ThrowsException<ArgumentException>(() => error.Equals(otherError));
         }
 

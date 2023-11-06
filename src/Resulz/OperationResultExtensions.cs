@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Resulz
 {
@@ -41,6 +42,31 @@ namespace Resulz
             }
             return result;
         }
+
+        #endregion
+
+        #region Then
+
+        /*
+        public static T Then<T>(this T result, Func<T> operation)
+            where T : IOperationResult
+        {
+            if (result == null) throw new ArgumentNullException(nameof(result));
+            if (operation == null) throw new ArgumentNullException(nameof(operation));
+            return result.Success ? operation() : result;
+        }
+
+        public static OperationResult<T> Then<T>(this IOperationResult result, Func<OperationResult<T>> operation)
+        {
+            if (result == null) throw new ArgumentNullException(nameof(result));
+            if (operation == null) throw new ArgumentNullException(nameof(operation));
+            return result.Success ? operation() : OperationResult<T>.MakeFailure(result.Errors);
+        }
+        */
+
+        #endregion
+
+        #region HasErrors***
 
         public static bool HasErrors(this IOperationResult result, string context, string description)
         {

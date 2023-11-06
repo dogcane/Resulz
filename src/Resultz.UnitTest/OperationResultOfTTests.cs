@@ -68,7 +68,10 @@ namespace Resulz.UnitTest
         [TestMethod()]
         public void MakeFailure_With_Null_ErrorMessages()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => OperationResult<int>.MakeFailure(null));
+            ErrorMessage[]? errors = null;
+#pragma warning disable CS8604 // Possibile argomento di riferimento Null.
+            Assert.ThrowsException<ArgumentNullException>(() => OperationResult<int>.MakeFailure(errors));
+#pragma warning restore CS8604 // Possibile argomento di riferimento Null.
         }
 
         [TestMethod()]
@@ -223,11 +226,11 @@ namespace Resulz.UnitTest
         }
 
         [TestMethod()]
-        public void Null_OperationResult_To_Null_Implicit_Operator()
+        public void Null_OperationResult_To_Null_Implicit_Operator_Throws_Exception()
         {
             OperationResult result = null;
-            OperationResult<int> resultOfT = result;
-            Assert.IsNull(resultOfT);
+            OperationResult<int> resultOfT;
+            Assert.ThrowsException<ArgumentNullException>(() => resultOfT = result);
         }
     }
 }
