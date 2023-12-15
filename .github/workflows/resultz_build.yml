@@ -54,8 +54,10 @@ jobs:
       - name: Pack
         run: |
             dotnet pack -v normal -c Release --no-restore --include-symbols --include-source src/Resulz/Resulz.csproj
+            dotnet pack -v normal -c Release --no-restore --include-symbols --include-source src/Resulz.Validation.Countries/Resulz.Validation.Countries.csproj
             dotnet pack -v normal -c Release --no-restore --include-symbols --include-source src/Resulz.Web/Resulz.Web.csproj
       - name: Push NuGet Feed
         run: |
             dotnet nuget push ./src/Resulz/bin/Release/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY
+            dotnet nuget push ./src/Resulz.Validation.Countries/bin/Release/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY
             dotnet nuget push ./src/Resulz.Web/bin/Release/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY

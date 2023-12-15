@@ -1,13 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Authors>Andrea Canegrati</Authors>
+		<Description>An "operation result" implementation with a "bit" of validation framework.</Description>
+		<PackageProjectUrl>https://github.com/dogcane/Resulz</PackageProjectUrl>
+		<PackageIcon></PackageIcon>
+		<RepositoryUrl>https://github.com/dogcane/Resulz</RepositoryUrl>
+		<RepositoryType>Git</RepositoryType>
+		<PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Resulz\Resulz.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Resulz\Resulz.csproj" />
+	</ItemGroup>
 
 </Project>
