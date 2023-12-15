@@ -7,7 +7,7 @@ public static class CountryValidationExtensions
 
     public static ValueChecker<string?> ValidateVatNumber(ValueChecker<string?> checker, string country, string message)
     {
-        if (checker.CanContinue() && (string.IsNullOrEmpty(checker.Value) || !CountryValidator.IsVatNumberValid(checker.Value, country)))
+        if (checker.CanContinue() && !CountryValidator.IsVatNumberValid(country, checker.Value ?? ""))
         {
             checker.Result.AppendError(checker.Context, message);
         }
@@ -19,7 +19,7 @@ public static class CountryValidationExtensions
 
     public static ValueChecker<string?> ValidateVatRecipientCode(this ValueChecker<string?> checker, string country, string message)
     {
-        if (checker.CanContinue() && (string.IsNullOrEmpty(checker.Value) || !CountryValidator.IsVatRecipientCodeValid(checker.Value, country)))
+        if (checker.CanContinue() && !CountryValidator.IsVatRecipientCodeValid(country, checker.Value ?? ""))
         {
             checker.Result.AppendError(checker.Context, message);
         }

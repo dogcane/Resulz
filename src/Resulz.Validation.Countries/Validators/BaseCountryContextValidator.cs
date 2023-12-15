@@ -11,8 +11,6 @@ public abstract class BaseCountryContextValidator : ICountryContextValidator
     #endregion
 
     #region Methods
-    public virtual bool IsValidPhoneNumber(string phoneNumber) => true;
-
     public virtual bool IsVatRecipientCodeValid(string recipientCode) => true;
 
     public virtual bool IsVatNumberValid(string vatNumber) => true;

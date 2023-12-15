@@ -38,22 +38,8 @@ public static class CountryValidator
         _ => new UnknownCountryContextValidator()
     };
 
-    public static bool IsVatNumberValid(string countryCode, string vatNumber)
-    {
-        if (string.IsNullOrEmpty(countryCode))
-            return false;
-        if (string.IsNullOrEmpty(vatNumber))
-            return false;
-        return GetValidator(countryCode).IsVatNumberValid(vatNumber);
-    }
+    public static bool IsVatNumberValid(string countryCode, string vatNumber) => GetValidator(countryCode).IsVatNumberValid(vatNumber);
 
-    public static bool IsVatRecipientCodeValid(string countryCode, string recipientCode)
-    {
-        if (string.IsNullOrEmpty(countryCode))
-            return false;
-        if (string.IsNullOrEmpty(recipientCode))
-            return false;
-        return GetValidator(countryCode).IsVatRecipientCodeValid(recipientCode);
-    }
+    public static bool IsVatRecipientCodeValid(string countryCode, string recipientCode) => GetValidator(countryCode).IsVatRecipientCodeValid(recipientCode);
     #endregion
 }
