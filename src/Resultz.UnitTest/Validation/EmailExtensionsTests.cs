@@ -13,6 +13,7 @@ namespace Resulz.Validation.UnitTest
     {
         [TestMethod()]
         [DataRow("email@email.com")]
+        [DataRow("email+01@email.com")]
         [DataRow("email@email.co.uk")]
         [DataRow("13456@123.com")]
         [DataRow("n.surname@my-company.net")]
