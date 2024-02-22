@@ -13,8 +13,11 @@
 
         [TestMethod()]
         [DataRow("IT40474690803", true)]
+        [DataRow("40474690803", true)]
         [DataRow("IT57690380324", true)]
+        [DataRow("57690380324", true)]
         [DataRow("IT36647720147", true)]
+        [DataRow("36647720147", true)]
         [DataRow("1234567890", false)]
         [DataRow("IT1234567890", false)]
         [DataRow("IT12345678901", false)]
@@ -23,7 +26,7 @@
         public void IsVatNumberValidTest(string vatNumber, bool expectedResult)
         {
             var validator = new IT_CountryContextValidator();
-            Assert.AreEqual(validator.IsVatNumberValid(vatNumber), expectedResult);
+            Assert.AreEqual(validator.IsVatNumberValid(vatNumber.CountrySafeVatNumber("IT")), expectedResult);
         }
 
         [TestMethod()]

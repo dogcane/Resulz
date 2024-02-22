@@ -7,7 +7,7 @@ public static class CountryValidationExtensions
 
     public static ValueChecker<string?> ValidateVatNumber(ValueChecker<string?> checker, string country, string message)
     {
-        if (checker.CanContinue() && !CountryValidator.IsVatNumberValid(country, checker.Value ?? ""))
+        if (checker.CanContinue() && !CountryValidator.IsVatNumberValid(country, checker.Value.CountrySafeVatNumber(country) ?? ""))
         {
             checker.Result.AppendError(checker.Context, message);
         }
@@ -25,4 +25,6 @@ public static class CountryValidationExtensions
         }
         return checker;
     }
+
+    public static string CountrySafeVatNumber(this string? vatNumber, string country) => string.IsNullOrEmpty(vatNumber) ? "" : vatNumber!.StartsWith(country.ToUpper()) ? vatNumber : string.Format("{0}{1}", country.ToUpper(), vatNumber);
 }
