@@ -281,5 +281,131 @@ namespace Resulz.UnitTest
             var result = OperationResult.MakeFailure(ErrorMessage.Create("ERROR_CTX", "ERROR_DESC"));
             Assert.IsFalse(result.HasErrorsByDescription("ERROR_DESC2"));
         }
+
+        #region Then Extension Methods Tests
+
+        [TestMethod()]
+        public void ThenExecutesWhenSuccessful()
+        {
+            var executed = false;
+            var result = OperationResult.MakeSuccess()
+                .Then(() =>
+                {
+                    executed = true;
+                    return OperationResult.MakeSuccess();
+                });
+
+            Assert.IsTrue(result.Success);
+            Assert.IsTrue(executed);
+        }
+
+        [TestMethod()]
+        public void ThenSkipsWhenFailed()
+        {
+            var executed = false;
+            var result = OperationResult.MakeFailure(ErrorMessage.Create("ERROR"))
+                .Then(() =>
+                {
+                    executed = true;
+                    return OperationResult.MakeSuccess();
+                });
+
+            Assert.IsFalse(result.Success);
+            Assert.IsFalse(executed);
+        }
+
+        [TestMethod()]
+        public void ThenWithGenericTypeExecutesWhenSuccessful()
+        {
+            var result = OperationResult.MakeSuccess()
+                .Then(() => OperationResult<string>.MakeSuccess("Hello"));
+
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual("Hello", result.Value);
+        }
+
+        [TestMethod()]
+        public void ThenWithGenericTypeSkipsWhenFailed()
+        {
+            var result = OperationResult.MakeFailure(ErrorMessage.Create("ERROR"))
+                .Then(() => OperationResult<string>.MakeSuccess("Hello"));
+
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(default(string), result.Value);
+        }
+
+        [TestMethod()]
+        public void ThenChainStopsAtFirstFailure()
+        {
+            var step1Executed = false;
+            var step2Executed = false;
+            var step3Executed = false;
+
+            var result = OperationResult.MakeSuccess()
+                .Then(() =>
+                {
+                    step1Executed = true;
+                    return OperationResult.MakeSuccess();
+                })
+                .Then(() =>
+                {
+                    step2Executed = true;
+                    return OperationResult.MakeFailure(ErrorMessage.Create("STEP2_ERROR"));
+                })
+                .Then(() =>
+                {
+                    step3Executed = true;
+                    return OperationResult.MakeSuccess();
+                });
+
+            Assert.IsFalse(result.Success);
+            Assert.IsTrue(step1Executed);
+            Assert.IsTrue(step2Executed);
+            Assert.IsFalse(step3Executed);
+        }
+
+        [TestMethod()]
+        public void ThenPreservesErrorsFromPreviousStep()
+        {
+            var originalError = ErrorMessage.Create("ORIGINAL_ERROR");
+            var result = OperationResult.MakeFailure(originalError)
+                .Then(() => OperationResult.MakeSuccess());
+
+            Assert.IsFalse(result.Success);
+            Assert.IsTrue(result.HasErrorsByDescription("ORIGINAL_ERROR"));
+        }
+
+        [TestMethod()]
+        public void ThenThrowsArgumentNullExceptionForNullResult()
+        {
+            OperationResult? nullResult = null;
+#pragma warning disable CS8631
+            Assert.ThrowsException<ArgumentNullException>(() => 
+                nullResult.Then(() => OperationResult.MakeSuccess()));
+#pragma warning restore CS8631
+        }
+
+        [TestMethod()]
+        public void ThenThrowsArgumentNullExceptionForNullOperation()
+        {
+            var result = OperationResult.MakeSuccess();
+#pragma warning disable CS8625
+            Assert.ThrowsException<ArgumentNullException>(() => 
+                result.Then((Func<OperationResult>)null));
+#pragma warning restore CS8625
+        }
+
+        [TestMethod()]
+        public void ThenGenericWithComplexChainExecutesCorrectly()
+        {
+            var result = OperationResult.MakeSuccess()
+                .Then(() => OperationResult<int>.MakeSuccess(42))
+                .Then(() => OperationResult<string>.MakeSuccess("Hello World"));
+
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual("Hello World", result.Value);
+        }
+
+        #endregion
     }
 }

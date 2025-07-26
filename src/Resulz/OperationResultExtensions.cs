@@ -11,8 +11,8 @@ namespace Resulz
         public static T IfSuccess<T>(this T result, Action<T> operation)
             where T : IOperationResult
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
-            if (operation == null) throw new ArgumentNullException(nameof(operation));
+            ArgumentNullException.ThrowIfNull(result);
+            ArgumentNullException.ThrowIfNull(operation);
             if (result.Success)
             {
                 operation(result);
@@ -22,8 +22,8 @@ namespace Resulz
 
         public static OperationResult<T> IfSuccessThenReturn<T>(this IOperationResult result, Func<T> factoryFunc)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
-            if (factoryFunc == null) throw new ArgumentNullException(nameof(factoryFunc));
+            ArgumentNullException.ThrowIfNull(result);
+            ArgumentNullException.ThrowIfNull(factoryFunc);
             return result.Success ? OperationResult<T>.MakeSuccess(factoryFunc()) : OperationResult<T>.MakeFailure(result.Errors);
         }
 
@@ -34,8 +34,8 @@ namespace Resulz
         public static T IfFailed<T>(this T result, Action<T> operation)
             where T : IOperationResult
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
-            if (operation == null) throw new ArgumentNullException(nameof(operation));
+            ArgumentNullException.ThrowIfNull(result);
+            ArgumentNullException.ThrowIfNull(operation);
             if (!result.Success)
             {
                 operation(result);
@@ -47,22 +47,20 @@ namespace Resulz
 
         #region Then
 
-        /*
         public static T Then<T>(this T result, Func<T> operation)
             where T : IOperationResult
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
-            if (operation == null) throw new ArgumentNullException(nameof(operation));
+            ArgumentNullException.ThrowIfNull(result);
+            ArgumentNullException.ThrowIfNull(operation);
             return result.Success ? operation() : result;
         }
 
         public static OperationResult<T> Then<T>(this IOperationResult result, Func<OperationResult<T>> operation)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
-            if (operation == null) throw new ArgumentNullException(nameof(operation));
+            ArgumentNullException.ThrowIfNull(result);
+            ArgumentNullException.ThrowIfNull(operation);
             return result.Success ? operation() : OperationResult<T>.MakeFailure(result.Errors);
         }
-        */
 
         #endregion
 
