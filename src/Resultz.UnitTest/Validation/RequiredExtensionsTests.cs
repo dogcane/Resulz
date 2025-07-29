@@ -32,9 +32,11 @@ namespace Resulz.Validation.UnitTest
         }
 
         [TestMethod()]
-        public void RequiredTestFailWithString()
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        public void RequiredTestFailWithString(string? strvalue)
         {
-            var strvalue = "";
             var result = OperationResult
                 .MakeSuccess()
                 .With(strvalue, nameof(strvalue)).Required()

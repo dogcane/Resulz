@@ -19,7 +19,7 @@
 
         public static ValueChecker<string?> Required(this ValueChecker<string?> checker, string message)
         {
-            if (checker.CanContinue() && (string.IsNullOrEmpty(checker.Value as string)))
+            if (checker.CanContinue() && string.IsNullOrWhiteSpace(checker.Value as string))
             {
                 checker.Result.AppendError(checker.Context, message);
             }
